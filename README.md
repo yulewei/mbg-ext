@@ -21,8 +21,7 @@ java -jar mbg-ext.jar --dir /Users/yulewei/spring-demo --config mbg-config.xml
 
 **支持的自定义插件和扩展：**
 
-  - `BaseMapperPlugin`：生成的 mapper 类将继承参数 `baseMapperType` 指定的基类（如 [Base](https://github.com
- /yulewei/mbg-ext/blob/master/src/main/java/org/mybatis/ext/base/Base.java)），生成的 model
+  - `BaseMapperPlugin`：生成的 mapper 类将继承参数 `baseMapperType` 指定的基类（如 [Base](https://github.com/yulewei/mbg-ext/blob/master/src/main/java/org/mybatis/ext/base/Base.java)），生成的 model
  类将继承参数 `baseEntityType` 指定的基类（如 [BaseMapper](https://github.com/yulewei/mbg-ext/blob/master/src/main/java/org/mybatis/ext/base/BaseMapper.java)）
   - `LombokPlugin`：生成的 model 类使用 [Lombok](https://projectlombok.org/) 注解
   - `RemarksCommentGenerator`：提取数据库表字段的注释到 model 类的字段注释中
