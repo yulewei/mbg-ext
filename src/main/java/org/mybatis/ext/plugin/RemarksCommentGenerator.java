@@ -22,7 +22,7 @@ import java.util.Properties;
 import java.util.Set;
 
 /**
- * MyBatis Generator 的注释生成器，会附带数据库表字段的注释到实体类中 <br>
+ * MyBatis Generator 的注释生成器，提取数据库表字段的注释到 model 类的字段注释中 <br>
  * <p>
  * 官方类似的功能见，在版本 1.3.3 中添加的 addRemarkComments <br>
  * http://www.mybatis.org/generator/configreference/commentGenerator.html <br>
