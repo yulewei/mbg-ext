@@ -18,9 +18,11 @@ dependencies {
     testCompile 'junit:junit:4.12'
 }
 
+mainClassName = 'org.mybatis.ext.MyBatisGen'
+
 jar {
     manifest {
-        attributes "Main-Class": "org.mybatis.ext.MyBatisGen"
+        attributes "Main-Class": "$mainClassName"
     }
     from sourceSets.main.allSource
     from {
