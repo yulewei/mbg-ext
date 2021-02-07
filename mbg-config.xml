@@ -8,6 +8,9 @@
 
         <!--<plugin type="org.mybatis.generator.plugins.SerializablePlugin"/>-->
 
+        <!-- 生成 limit, offset 分页参数 -->
+        <plugin type="org.mybatis.ext.plugin.MySqlLimitPlugin"/>
+
         <plugin type="org.mybatis.ext.plugin.BaseMapperPlugin">
             <property name="baseMapperType" value="org.mybatis.ext.base.BaseMapper"/>
             <property name="baseEntityType" value="org.mybatis.ext.base.Base"/>
