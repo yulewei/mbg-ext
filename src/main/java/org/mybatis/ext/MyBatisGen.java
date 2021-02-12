@@ -51,7 +51,7 @@ public class MyBatisGen {
         options.addOption(dirOption);
 
         Option configOption = Option.builder("c")
-                .longOpt("config")
+                .longOpt("configfile")
                 .hasArg()
                 .desc("xml configuration file, <mbg-config.xml>")
                 .required(false)
