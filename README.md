@@ -11,7 +11,7 @@ usage: mgb-ext
  -o,--overwrite <arg>    overwrite existing file, <true>
 
 # 代码生成使用示例
-java -jar mbg-ext.jar --dir /Users/yulewei/spring-demo --config mbg-config.xml
+java -jar mbg-ext.jar --dir /Users/yulewei/spring-demo --configfile mbg-config.xml
 ```
 
 注意：
