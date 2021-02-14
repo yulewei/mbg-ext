@@ -16,7 +16,7 @@ java -jar mbg-ext.jar --dir /Users/yulewei/spring-demo --configfile mbg-config.x
 
 注意：
 
-  - 如果不传 `–config` 参数，mbg-config.xml 文件需要在 `--dir` 参数指定的目录下；
+  - 如果不传 `–configfile` 参数，mbg-config.xml 文件需要在 `--dir` 参数指定的目录下；
   - 示例的 [mbg-config.xml](https://github.com/yulewei/mbg-ext/blob/master/mbg-config.xml) 配置文件内的配置项 `targetProject` 以 `--dir` 参数指定的目录为根目录
 
 **内置提供的自定义插件和扩展：**
