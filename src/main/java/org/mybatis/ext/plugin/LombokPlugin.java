@@ -166,8 +166,8 @@ public class LombokPlugin extends PluginAdapter {
     public boolean clientGenerated(Interface interfaze,
                                    TopLevelClass topLevelClass,
                                    IntrospectedTable introspectedTable) {
-//        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Mapper"));
-//        interfaze.addAnnotation("@Mapper");
+        interfaze.addImportedType(new FullyQualifiedJavaType("org.apache.ibatis.annotations.Mapper"));
+        interfaze.addAnnotation("@Mapper");
         return true;
     }
 
