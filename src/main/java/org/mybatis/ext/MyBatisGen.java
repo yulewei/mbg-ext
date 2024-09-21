@@ -1,13 +1,6 @@
 package org.mybatis.ext;
 
-import jnr.posix.POSIX;
-import jnr.posix.POSIXFactory;
-import org.apache.commons.cli.CommandLine;
-import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.DefaultParser;
-import org.apache.commons.cli.HelpFormatter;
-import org.apache.commons.cli.Option;
-import org.apache.commons.cli.Options;
+import org.apache.commons.cli.*;
 import org.mybatis.generator.api.MyBatisGenerator;
 import org.mybatis.generator.config.Configuration;
 import org.mybatis.generator.config.Context;
@@ -26,7 +19,7 @@ import java.util.List;
  * @author yulewei on 2017/9/24
  */
 public class MyBatisGen {
-    private static POSIX posix = POSIXFactory.getPOSIX();
+    private static final LibC libC = LibC.load();
 
     /**
      * 生成器的配置文件自行指定，从命令行参数传入
@@ -83,17 +76,17 @@ public class MyBatisGen {
             }
 
             String dir = cmd.getOptionValue("dir", ".");
-            String configFile = cmd.getOptionValue("config", "mbg-config.xml");
+            String configFile = cmd.getOptionValue("configfile", "mbg-config.xml");
             boolean overwrite = Boolean.parseBoolean(cmd.getOptionValue("overwrite", "true"));
             boolean exampleEnabled = Boolean.parseBoolean(cmd.getOptionValue("example", "true"));
             if (!dir.equals(".")) {
-                posix.chdir(dir);
-                System.out.println("current working dir: " + posix.getcwd());
+                libC.chdir(dir);
+                System.out.println("current working dir: " + libC.getcwd());
             }
             // 运行 MyBatis Generator
             MyBatisGen.runGenerator(configFile, overwrite, exampleEnabled);
         } catch (Exception e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace(System.err);
             MyBatisGen.printHelp(options);
         }
     }

@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * MyBatis Generator (MBG) 通用 Mapper 基类
  *
- * @author yulewei on 2017/8/24
+ * @author yulewei
  */
 public interface BaseMapper<T, E> {
 

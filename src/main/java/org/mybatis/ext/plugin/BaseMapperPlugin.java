@@ -1,6 +1,5 @@
 package org.mybatis.ext.plugin;
 
-import org.apache.commons.lang3.StringUtils;
 import org.mybatis.generator.api.IntrospectedTable;
 import org.mybatis.generator.api.PluginAdapter;
 import org.mybatis.generator.api.dom.java.FullyQualifiedJavaType;
@@ -21,6 +20,8 @@ import static org.mybatis.generator.internal.util.StringUtility.stringHasValue;
  */
 public class BaseMapperPlugin extends PluginAdapter {
 
+    private String simpleBaseMapperType;
+
     private String baseMapperType;
 
     private String baseEntityType;
@@ -40,13 +41,14 @@ public class BaseMapperPlugin extends PluginAdapter {
     @Override
     public void setProperties(Properties properties) {
         super.setProperties(properties);
+        simpleBaseMapperType = properties.getProperty("simpleBaseMapperType");
         baseMapperType = properties.getProperty("baseMapperType");
         baseEntityType = properties.getProperty("baseEntityType");
     }
 
     @Override
     public boolean clientGenerated(Interface interfaze, TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        if (!stringHasValue(baseMapperType)) {
+        if (!stringHasValue(simpleBaseMapperType) && !stringHasValue(baseMapperType)) {
             System.err.println("[ERROR] BaseMapperPlugin baseMapperType property must be provided");
             return false;
         }
@@ -54,19 +56,26 @@ public class BaseMapperPlugin extends PluginAdapter {
         FullyQualifiedJavaType baseRecordJavaType = new FullyQualifiedJavaType(introspectedTable.getBaseRecordType());
         interfaze.addImportedType(baseRecordJavaType);
 
-        FullyQualifiedJavaType exampleJavaType;
-        if (introspectedTable.getRules().generateExampleClass()) {
-            exampleJavaType = new FullyQualifiedJavaType(introspectedTable.getExampleType());
+        if (stringHasValue(baseMapperType)) {
+            FullyQualifiedJavaType exampleJavaType;
+            if (introspectedTable.getRules().generateExampleClass()) {
+                exampleJavaType = new FullyQualifiedJavaType(introspectedTable.getExampleType());
+            } else {
+                exampleJavaType = new FullyQualifiedJavaType("java.lang.Object");
+            }
+            interfaze.addImportedType(exampleJavaType);
+
+            FullyQualifiedJavaType baseMapperJavaType = new FullyQualifiedJavaType(baseMapperType);
+            FullyQualifiedJavaType baseMapperJavaType2 = new FullyQualifiedJavaType(baseMapperType + "<" + baseRecordJavaType.getShortName() + "," + exampleJavaType.getShortName() + ">");
+
+            interfaze.addImportedType(baseMapperJavaType);
+            interfaze.addSuperInterface(baseMapperJavaType2);
         } else {
-            exampleJavaType = new FullyQualifiedJavaType("java.lang.Object");
+            FullyQualifiedJavaType baseMapperJavaType = new FullyQualifiedJavaType(simpleBaseMapperType);
+            FullyQualifiedJavaType baseMapperJavaType2 = new FullyQualifiedJavaType(simpleBaseMapperType + "<" + baseRecordJavaType.getShortName() + ">");
+            interfaze.addImportedType(baseMapperJavaType);
+            interfaze.addSuperInterface(baseMapperJavaType2);
         }
-        interfaze.addImportedType(exampleJavaType);
-
-        FullyQualifiedJavaType baseMapperJavaType = new FullyQualifiedJavaType(baseMapperType);
-        FullyQualifiedJavaType baseMapperJavaType2 = new FullyQualifiedJavaType(baseMapperType + "<" + baseRecordJavaType.getShortName() + "," + exampleJavaType.getShortName() + ">");
-
-        interfaze.addImportedType(baseMapperJavaType);
-        interfaze.addSuperInterface(baseMapperJavaType2);
 
         String targetPackage = getContext().getJavaClientGeneratorConfiguration().getTargetProject();
         String path = targetPackage + "/" + interfaze.getType().getFullyQualifiedName().replaceAll("\\.", "/") + ".java";
@@ -96,7 +105,7 @@ public class BaseMapperPlugin extends PluginAdapter {
     }
 
     private void addBaseEntityType(TopLevelClass topLevelClass, IntrospectedTable introspectedTable) {
-        if (StringUtils.isNotBlank(baseEntityType)) {
+        if (baseEntityType != null && !baseEntityType.trim().isEmpty()) {
             FullyQualifiedJavaType baseEntityJavaType = new FullyQualifiedJavaType(baseEntityType);
             topLevelClass.addImportedType(baseEntityJavaType);
             topLevelClass.setSuperClass(baseEntityJavaType);
